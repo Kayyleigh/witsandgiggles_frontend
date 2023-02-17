@@ -1,29 +1,30 @@
 import axios from 'axios';
 import authHeader from './auth-header';
-
-const API_URL = 'http://localhost:8080/api/test/'; //TODO: /test doesn't even exist so change that
+const { API_PREFIX, SERVER_PORT, USER_PATH } = require('../server-paths');
 
 class UserService {
   getPublicContent() {
-    return axios.get(API_URL + 'all');
+    return axios.get(API_PREFIX + SERVER_PORT + USER_PATH + 'all');
   }
 
   getUserBoard() {
-    return axios.get(API_URL + 'user', { headers: authHeader() }); 
-    /* This is trying to call this (for me unexisting) method in the backend:
-
-    	@GetMapping("/user")
-	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-	public String userAccess() {
-		return "User Content.";
-	}
-    */
+    return axios.get(API_PREFIX + SERVER_PORT + USER_PATH + 'user', { headers: authHeader() }); 
   }
 
   getAdminBoard() {
-    return axios.get(API_URL + 'admin', { headers: authHeader() });
+   return axios.get(API_PREFIX + SERVER_PORT + USER_PATH + 'admin', { headers: authHeader() });
+  }
+
+  
+  getCurrentUser() {
+    return axios.get(
+        API_PREFIX + SERVER_PORT + USER_PATH + 'username', 
+        { headers: authHeader() }
+    ).then(response => {
+        return response.data;
+    });
   }
 }
 
-const exp = new UserService();
+let exp = new UserService();
 export default exp;

@@ -4,6 +4,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 import AuthService from "./services/auth.service";
+import UserService from "./services/user.service";
+
 
 import Login from "./components/login.component";
 import Register from "./components/register.component";
@@ -24,14 +26,8 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const user = AuthService.getCurrentUser();
-
-    if (user) {
-      this.setState({
-        currentUser: user,
-        showAdminBoard: user.roles.includes("ROLE_ADMIN"),
-      });
-    }
+    const currentUser = UserService.getCurrentUser();
+    currentUser.then(result => this.setState({ currentUser: result }));
   }
 
   logOut() {
@@ -51,7 +47,7 @@ class App extends Component {
       <div>
          <nav className="navbar navbar-expand navbar-dark bg-dark">
          <Link to={"/"} className="navbar-brand">     	   
-            bezKoder
+            WitsAndRiddles
           </Link>      
           <div className="navbar-nav mr-auto">
             <li className="nav-item">
