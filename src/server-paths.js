@@ -1,5 +1,5 @@
 const API_PREFIX = "http://localhost:"
-const USER_PATH = "/users/"
+const USER_PATH = "/api/users/"
 const AUTH_PATH = "/api/auth/"
 
 const SERVER_PORT = 8080

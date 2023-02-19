@@ -15,6 +15,10 @@ class UserService {
    return axios.get(API_PREFIX + SERVER_PORT + USER_PATH + 'admin', { headers: authHeader() });
   }
 
+  getProfileBoard(user) {
+    return axios.get(API_PREFIX + SERVER_PORT + USER_PATH + 'profile/' + user, { headers: authHeader() });
+   }
+
   
   getCurrentUser() {
     return axios.get(

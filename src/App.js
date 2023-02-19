@@ -26,8 +26,8 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const currentUser = UserService.getCurrentUser();
-    currentUser.then(result => this.setState({ currentUser: result }));
+    const user = UserService.getCurrentUser();
+    user.then(result => this.setState({ currentUser: result }));
   }
 
   logOut() {
@@ -41,6 +41,7 @@ class App extends Component {
 
   render() {
     const { currentUser, showAdminBoard } = this.state;
+    console.log(currentUser);
 
     return (
       
@@ -78,8 +79,13 @@ class App extends Component {
           {currentUser ? (
             <div className="navbar-nav ml-auto">
               <li className="nav-item">
-                <Link to={"/profile"} className="nav-link">
-                  {currentUser.username}
+                  <Link 
+                  to={"/profile/:" + currentUser} 
+                  state = {
+                          {currentUser: { username: currentUser }}
+                    } 
+                  className="nav-link">
+                    {currentUser}
                 </Link>
               </li>
               <li className="nav-item">
@@ -111,17 +117,12 @@ class App extends Component {
             <Route path="/home" element={<Home />} />
             <Route path="/login" element={<Login />} />  
             <Route path="/register" element={<Register />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile/:username" element={<Profile/>} />
             <Route path="/user" element={<BoardUser />} />
             <Route path="/admin" element={<BoardAdmin />} />
           </Routes>
         </div>
-
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/home" element={<Home />} />
-          </Routes>
-        </div>
+      </div>
     );    
   }
 }
