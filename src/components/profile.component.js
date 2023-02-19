@@ -10,7 +10,8 @@ class Profile extends Component {
     this.state = {
       redirect: null,
       userReady: false,
-      currentUser: { username: "hi" }
+      currentUser: { username: "hi" },
+      canEdit: false
     };
   }
 
@@ -30,6 +31,14 @@ class Profile extends Component {
           });
         }
       );
+      
+    const user = UserService.getCurrentUser();
+    user.then(response =>
+        this.setState({
+            canEdit: response === this.state.currentUser.username
+        })
+        )
+
   }
 
   componentDidUpdate() {
@@ -44,7 +53,7 @@ class Profile extends Component {
     if (this.state.redirect) {
       return <Navigate to={this.state.redirect} />
     }
-    
+
     if(this.props.router.location.state.currentUser.username !== this.state.currentUser.username) {
         //we reach this when switching from one profile page to another
         this.componentDidMount();
@@ -80,9 +89,11 @@ class Profile extends Component {
             currentUser.solves.map((solve, index) => <li key={index}>{solve}</li>)}
         </ul>
 
-    {(this.state.currentUser.username === UserService.getCurrentUser()) ? 
-    <div><button>Edit profile</button></div>: null   
+        <div className="container">
+    {(this.state.canEdit) ?
+    <div><h1>This is your profile</h1></div>: null
     }
+    </div>
 
       </div>: null}
       </div>
