@@ -40,13 +40,14 @@ class Profile extends Component {
   render() {    
     console.log(this.props.router.location.state);
     
-    if(this.props.router.location.state.currentUser.username !== this.state.currentUser.username) {
-        //we reach this when switching from one profile page to another
-        this.componentDidMount();
-    }
 
     if (this.state.redirect) {
       return <Navigate to={this.state.redirect} />
+    }
+    
+    if(this.props.router.location.state.currentUser.username !== this.state.currentUser.username) {
+        //we reach this when switching from one profile page to another
+        this.componentDidMount();
     }
 
     const { currentUser } = this.state;
@@ -78,6 +79,11 @@ class Profile extends Component {
           {currentUser.solves &&
             currentUser.solves.map((solve, index) => <li key={index}>{solve}</li>)}
         </ul>
+
+    {(this.state.currentUser.username === UserService.getCurrentUser()) ? 
+    <div><button>Edit profile</button></div>: null   
+    }
+
       </div>: null}
       </div>
     );
