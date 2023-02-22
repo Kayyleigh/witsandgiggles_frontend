@@ -13,6 +13,7 @@ import Home from "./components/home.component";
 import Profile from "./components/profile.component";
 import BoardUser from "./components/board-user.component";
 import BoardAdmin from "./components/board-admin.component";
+import ProfileEditor from "./components/profile-editor.component";
 
 class App extends Component {
   constructor(props) {
@@ -68,7 +69,7 @@ class App extends Component {
             {currentUser && (
               <li className="nav-item">
                 <Link to={"/user"} className="nav-link">
-                  User
+                  Sudokus
                 </Link>
               </li>
             )}
@@ -118,6 +119,7 @@ class App extends Component {
             <Route path="/login" element={<Login />} />  
             <Route path="/register" element={<Register />} />
             <Route path="/profile/:username" element={<Profile/>} />
+            <Route path="/profile/edit" element={<ProfileEditor/>} />
             <Route path="/user" element={<BoardUser />} />
             <Route path="/admin" element={<BoardAdmin />} />
           </Routes>

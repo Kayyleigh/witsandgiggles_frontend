@@ -1,6 +1,6 @@
 import axios from 'axios';
 import authHeader from './auth-header';
-const { API_PREFIX, SERVER_PORT, USER_PATH } = require('../server-paths');
+const { API_PREFIX, SERVER_PORT, USER_PATH, SUDOKU_PATH } = require('../server-paths');
 
 class UserService {
   getPublicContent() {
@@ -8,7 +8,7 @@ class UserService {
   }
 
   getUserBoard() {
-    return axios.get(API_PREFIX + SERVER_PORT + USER_PATH + 'user', { headers: authHeader() }); 
+    return axios.get(API_PREFIX + SERVER_PORT + SUDOKU_PATH + 'all', { headers: authHeader() }); //TODO: make public
   }
 
   getAdminBoard() {
@@ -17,6 +17,24 @@ class UserService {
 
   getProfileBoard(user) {
     return axios.get(API_PREFIX + SERVER_PORT + USER_PATH + 'profile/' + user, { headers: authHeader() });
+   }
+
+   updateBio(bio) {
+    let config = {
+        headers: authHeader(),
+        params: {
+          bio: bio
+        },
+      }
+
+      return axios
+      .put(API_PREFIX + SERVER_PORT + USER_PATH + 'update/bio', null, {
+          params: { bio: bio},
+          headers: 
+              authHeader(),
+      }).then(
+        response => console.log(response))
+      .catch(err => console.warn(err));
    }
 
   

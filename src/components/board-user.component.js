@@ -7,7 +7,7 @@ export default class BoardUser extends Component {
     super(props);
 
     this.state = {
-      content: ""
+      content: []
     };
   }
 
@@ -32,11 +32,25 @@ export default class BoardUser extends Component {
   }
 
   render() {
+    const { content } = this.state;
+    console.log(content);
     return (
       <div className="container">
         <header className="jumbotron">
-          <h3>{this.state.content}</h3>
-        </header>
+          <h3>All sudokus</h3>
+          </header>
+                  <ul>
+          {content &&
+            content.map((creation, i) => <li key={i}>
+                <div>
+                    {creation.title} 
+                    <br/>
+                    {creation.description}
+                    </div>
+                
+                </li>)}
+        </ul>
+      
       </div>
     );
   }

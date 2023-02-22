@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
+
 import UserService from "../services/user.service";
 import { withRouter } from '../common/with-router';
 
@@ -33,13 +34,16 @@ class Profile extends Component {
       );
       
     const user = UserService.getCurrentUser();
-    user.then(response =>
+    user.then(response => {
         this.setState({
             canEdit: response === this.state.currentUser.username
-        })
-        )
-
+        });
+        console.log(response);
+        console.log(this.state.currentUser.username);
+    });
   }
+
+  
 
   componentDidUpdate() {
     console.log("Updated:" + this.props.router.location.pathname);
@@ -48,7 +52,6 @@ class Profile extends Component {
 
   render() {    
     console.log(this.props.router.location.state);
-    
 
     if (this.state.redirect) {
       return <Navigate to={this.state.redirect} />
@@ -58,8 +61,8 @@ class Profile extends Component {
         //we reach this when switching from one profile page to another
         this.componentDidMount();
     }
-
     const { currentUser } = this.state;
+    console.log(currentUser.creations)
 
     return (
       <div className="container">
@@ -67,7 +70,7 @@ class Profile extends Component {
         <div>
         <header className="jumbotron">
           <h3>
-            <strong>{currentUser.username}</strong> Profile
+            <strong>{currentUser.username}</strong>'s Profile
           </h3>
         </header>
         <p>
@@ -78,10 +81,31 @@ class Profile extends Component {
           <strong>Bio:</strong>{" "}
           {currentUser.bio}
         </p>
+
+        <div className="container">
+            {
+            (this.state.canEdit) ?
+            <div>
+                <Link to={"/profile/edit"} state = {
+                          {currentUser: { username: currentUser.username }}
+                        } className="nav-link">
+                  Edit
+                </Link> 
+            </div>: null
+            }
+        </div>
+    
         <strong>Creations:</strong>
         <ul>
           {currentUser.creations &&
-            currentUser.creations.map((creation, index) => <li key={index}>{creation}</li>)}
+            currentUser.creations.map((creation, index) => <li key={index}>
+                <div>
+                    {creation.title} 
+                    <br/>
+                    {creation.description}
+                    </div>
+                
+                </li>)}
         </ul>
         <strong>Solves:</strong>
         <ul>
@@ -89,11 +113,7 @@ class Profile extends Component {
             currentUser.solves.map((solve, index) => <li key={index}>{solve}</li>)}
         </ul>
 
-        <div className="container">
-    {(this.state.canEdit) ?
-    <div><h1>This is your profile</h1></div>: null
-    }
-    </div>
+
 
       </div>: null}
       </div>
